@@ -19,7 +19,8 @@
             saveManager = SaveManager.instance;
             saveManager.addEventListener(SaveManager.GAME_LOADED, onGameLoaded);
 
-            buttonLoad.enabled = File.applicationStorageDirectory.resolvePath("saves").exists;
+            var f:File = File.applicationStorageDirectory.resolvePath("saves");
+            buttonLoad.enabled = f.exists && f.getDirectoryListing().length > 0;
         }
 
         private function onGameLoaded(event:Event):void
