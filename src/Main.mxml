@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+                       xmlns:s="library://ns.adobe.com/flex/spark"
+                       xmlns:ui="components.*"
+                       width="640"
+                       height="480"
+                       frameRate="60"
+                       showStatusBar="false">
+
+    <fx:Style source="/assets/css/global.css"/>
+
+    <fx:Script><![CDATA[
+        ]]></fx:Script>
+    <ui:Browser id="browser"
+                width="100%"
+                height="100%"/>
+</s:WindowedApplication>

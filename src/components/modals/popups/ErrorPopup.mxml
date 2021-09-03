@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<popups:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+              xmlns:s="library://ns.adobe.com/flex/spark"
+              creationComplete="onCreationComplete(event)"
+              xmlns:popups="components.modals.popups.*">
+
+    <fx:Script>
+        <![CDATA[
+        private function onClickClose(event:MouseEvent):void
+        {
+            close();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Group width="400">
+
+        <s:BitmapImage id="bitmapImage"
+                       smooth="true"
+                       smoothingQuality="high"/>
+
+        <s:VGroup id="content"
+                  width="100%"
+                  gap="0">
+
+            <s:Panel width="100%">
+                <s:VGroup width="100%"
+                          padding="15">
+                    <s:Label text="Error!"
+                             fontSize="20"
+                             fontWeight="bold"
+                             width="100%"/>
+                    <s:Label text="Hello world"/>
+                    <s:Button label="[X] Close Popup"
+                              click="onClickClose(event)"/>
+                </s:VGroup>
+                <s:HGroup width="100%"
+                          height="100%"
+                          padding="10">
+
+                </s:HGroup>
+            </s:Panel>
+
+        </s:VGroup>
+    </s:Group>
+
+</popups:Popup>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<modals:Modal xmlns:fx="http://ns.adobe.com/mxml/2009"
+              creationComplete="onCreationComplete(event)"
+              xmlns:modals="components.modals.*"
+              visible="false">
+
+    <fx:Script><![CDATA[
+        import com.greensock.TweenLite;
+
+        import logic.Signal;
+        import logic.events.PopupEvent;
+        import logic.managers.PopupManager;
+
+        import spark.components.Group;
+
+        import spark.primitives.BitmapImage;
+
+        private var lockForAnimation:Boolean = false;
+        public var bitmapImage:BitmapImage;
+        public var content:Group;
+
+        override public function show():void
+        {
+            if (lockForAnimation)
+                return;
+
+            trace("popup.show: " + getQualifiedClassName(this));
+
+            lockForAnimation = true;
+
+            animationMode = true;
+            visible = true;
+
+            // Animate in
+            var tweenFrom:Object = {
+                scaleX: .95,
+                scaleY: .95
+            };
+
+            var tweenTo:Object = {
+                scaleX: 1,
+                scaleY: 1,
+                onComplete: onShowTweenComplete
+            };
+
+            TweenLite.fromTo(this, .2, tweenFrom, tweenTo);
+        }
+
+        private function onShowTweenComplete():void
+        {
+            animationMode = false;
+            lockForAnimation = false;
+        }
+
+        override public function hide():void
+        {
+            if (lockForAnimation)
+                return;
+
+            trace("popup.hide: " + getQualifiedClassName(this));
+
+            lockForAnimation = true;
+
+            animationMode = true;
+            visible = true;
+
+            // Animate out
+            var tweenTo:Object = {
+                scaleX: .95,
+                scaleY: .95,
+                alpha: 0,
+                onComplete: onHideTweenComplete
+            };
+
+            TweenLite.to(this, .2, tweenTo);
+        }
+
+        private function onHideTweenComplete():void
+        {
+            animationMode = false;
+
+            // Dispose when done
+            dispose();
+            Signal.instance.dispatch(new PopupEvent(PopupEvent.CLOSED));
+        }
+
+        private function set animationMode(b:Boolean):void
+        {
+            if (b)
+            {
+                // Cache the content as a bitmap and show it
+                bitmapImage.source = null;
+                var bitmapData:BitmapData = new BitmapData(content.width,
+                        content.height,
+                        true,
+                        0x000000);
+                bitmapData.draw(content);
+                bitmapImage.source = bitmapData;
+
+                bitmapImage.visible = true;
+                content.visible = false;
+            } else
+            {
+                // Hide the bitmap
+                bitmapImage.visible = false;
+                content.visible = true;
+            }
+        }
+
+        override public function dispose():void
+        {
+            (owner as Group).removeElement(this);
+        }
+        ]]>
+    </fx:Script>
+</modals:Modal>

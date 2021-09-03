@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<pages:Page xmlns:fx="http://ns.adobe.com/mxml/2009"
+            xmlns:s="library://ns.adobe.com/flex/spark"
+            creationComplete="onCreationComplete(event)"
+            xmlns:pages="components.modals.pages.*">
+
+    <fx:Script>
+        <![CDATA[
+        import logic.managers.PageManager;
+
+        private function onClickContinue(event:MouseEvent):void
+        {
+            PageManager.open(new StartPage());
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Group width="100%"
+             height="100%">
+
+        <s:BitmapImage id="bitmapImage"
+                       smooth="true"
+                       smoothingQuality="high"/>
+
+        <s:VGroup id="content"
+                  width="100%"
+                  height="100%"
+                  gap="0">
+
+            <s:Panel width="100%"
+                     height="100%">
+                <s:VGroup width="100%"
+                          height="100%"
+                          horizontalAlign="center"
+                          verticalAlign="middle">
+                    <s:Label text="Loading"/>
+                    <s:Button label="continue"
+                              click="onClickContinue(event)"/>
+                </s:VGroup>
+            </s:Panel>
+
+        </s:VGroup>
+    </s:Group>
+
+</pages:Page>

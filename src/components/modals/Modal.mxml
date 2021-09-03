@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         creationComplete="onCreationComplete(event)">
+
+    <fx:Script><![CDATA[
+        import mx.events.FlexEvent;
+
+        public function onCreationComplete(event:FlexEvent):void
+        {
+            callLater(show);
+        }
+
+        public function show():void
+        {
+            // (Overwrite in derived classes)
+        }
+
+        public function hide():void
+        {
+            // (Overwrite in derived classes)
+        }
+
+        public function dispose():void
+        {
+            // (Overwrite in derived classes)
+        }
+
+        public function close():void
+        {
+            hide();
+        }
+        ]]>
+    </fx:Script>
+</s:Group>

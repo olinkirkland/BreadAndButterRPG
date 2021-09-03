@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+         xmlns:s="library://ns.adobe.com/flex/spark"
+         creationComplete="onCreationComplete(event)">
+    <fx:Script>
+        <![CDATA[
+        import com.greensock.TweenLite;
+
+        import components.modals.pages.LoadingPage;
+        import components.modals.pages.Page;
+        import components.modals.popups.Popup;
+
+        import logic.Signal;
+        import logic.events.PageEvent;
+        import logic.events.PopupEvent;
+        import logic.managers.PageManager;
+
+        import mx.events.FlexEvent;
+
+        private var signal:Signal;
+
+        private var currentPage:Page;
+        private var nextPage:Page;
+
+        private var currentPopup:Popup;
+        private var nextPopup:Popup;
+
+
+        private function onCreationComplete(event:FlexEvent):void
+        {
+            // Signal
+            signal = Signal.instance;
+
+            // Page Events
+            signal.addEventListener(PageEvent.OPEN, function (event:PageEvent):void
+            {
+                openPage(event.page);
+            });
+            signal.addEventListener(PageEvent.CLOSED, pageClosed);
+
+            // Popup Events
+            signal.addEventListener(PopupEvent.OPEN, function (event:PopupEvent):void
+            {
+                openPopup(event.popup);
+            });
+            signal.addEventListener(PopupEvent.CLOSED, popupClosed);
+
+            // Start the game
+            PageManager.open(new LoadingPage());
+        }
+
+        private function openPage(page:Page):void
+        {
+            if (currentPage)
+            {
+                // Close the current Page and queue the new one to start
+                currentPage.close();
+                nextPage = page;
+                return;
+            }
+
+            pageGroup.addElement(page);
+            currentPage = page;
+        }
+
+        private function pageClosed(event:PageEvent):void
+        {
+            // A page was closed
+            currentPage = null;
+            if (nextPage)
+            {
+                openPage(nextPage);
+                nextPage = null;
+            }
+        }
+
+        private function openPopup(popup:Popup):void
+        {
+            if (currentPopup)
+            {
+                // Close the current Popup and queue the new one to start
+                currentPopup.close();
+                nextPopup = popup;
+                return;
+            }
+
+            TweenLite.to(popupShade, .2, {alpha: 1});
+            popupShade.mouseEnabled = true;
+            popupGroup.addElement(popup);
+            currentPopup = popup;
+        }
+
+        private function popupClosed(event:PopupEvent):void
+        {
+            // A popup was closed
+            TweenLite.to(popupShade, .2, {alpha: 0});
+            popupShade.mouseEnabled = false;
+            currentPopup = null;
+
+            if (nextPopup)
+            {
+                openPopup(nextPopup);
+                nextPopup = null;
+            }
+        }
+        ]]>
+    </fx:Script>
+
+    <!--Pages-->
+    <s:HGroup id="pageGroup"
+              width="100%"
+              height="100%"
+              padding="15"
+              horizontalAlign="center"
+              verticalAlign="middle"/>
+
+    <!--Popups-->
+    <s:Group id="popupShade"
+             width="100%"
+             height="100%"
+             alpha="0"
+             mouseEnabled="false">
+        <s:Rect width="100%"
+                height="100%">
+            <s:fill>
+                <s:SolidColor color="0x000000"
+                              alpha="0.6"/>
+            </s:fill>
+        </s:Rect>
+    </s:Group>
+    <s:HGroup id="popupGroup"
+              width="100%"
+              height="100%"
+              horizontalAlign="center"
+              verticalAlign="middle"/>
+
+</s:Group>
