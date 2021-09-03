@@ -5,16 +5,9 @@
 
     <fx:Script>
         <![CDATA[
-        import logic.managers.PageManager;
-
         override public function show():void
         {
-            PageManager.open(new StartPage());
-        }
-
-        private function onClickContinue(event:MouseEvent):void
-        {
-            PageManager.open(new StartPage());
+            super.show();
         }
         ]]>
     </fx:Script>
@@ -37,9 +30,7 @@
                           height="100%"
                           horizontalAlign="center"
                           verticalAlign="middle">
-                    <s:Label text="loading"/>
-                    <s:Button label="continue"
-                              click="onClickContinue(event)"/>
+                    <s:Label text="game"/>
                 </s:VGroup>
             </s:Panel>
 

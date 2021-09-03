@@ -5,15 +5,24 @@
 
     <fx:Script>
         <![CDATA[
+        import logic.GameState;
         import logic.managers.PageManager;
+        import logic.managers.SaveManager;
 
         override public function show():void
+        {
+            super.show();
+        }
+
+        private function onClickBack(event:MouseEvent):void
         {
             PageManager.open(new StartPage());
         }
 
         private function onClickContinue(event:MouseEvent):void
         {
+            GameState.instance.characterName = inputCharacterName.text;
+            SaveManager.instance.saveGame();
             PageManager.open(new StartPage());
         }
         ]]>
@@ -37,9 +46,14 @@
                           height="100%"
                           horizontalAlign="center"
                           verticalAlign="middle">
-                    <s:Label text="loading"/>
+                    <s:Label text="create character"/>
+                    <s:TextInput id="inputCharacterName"
+                                 text="foo"
+                                 textAlign="center"/>
                     <s:Button label="continue"
                               click="onClickContinue(event)"/>
+                    <s:Button label="back"
+                              click="onClickBack(event)"/>
                 </s:VGroup>
             </s:Panel>
 

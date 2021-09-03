@@ -1,11 +1,45 @@
 <?xml version="1.0"?>
 <pages:Page xmlns:fx="http://ns.adobe.com/mxml/2009"
             xmlns:s="library://ns.adobe.com/flex/spark"
-            creationComplete="onCreationComplete(event)"
             xmlns:pages="components.modals.pages.*">
 
     <fx:Script>
         <![CDATA[
+        import logic.GameState;
+        import logic.GameState;
+        import logic.managers.PageManager;
+        import logic.managers.SaveManager;
+
+        private var saveManager:SaveManager;
+
+        override public function show():void
+        {
+            super.show();
+
+            saveManager = SaveManager.instance;
+            saveManager.addEventListener(SaveManager.GAME_LOADED, onGameLoaded);
+
+            buttonLoad.enabled = File.applicationStorageDirectory.resolvePath("saves").exists;
+        }
+
+        private function onGameLoaded(event:Event):void
+        {
+            var gameState:GameState = GameState.instance;
+            trace("onGameLoaded: \"" + GameState.instance.characterName + "\"");
+
+            PageManager.open(gameState.characterName ? new GamePage() : new CharacterCreatePage());
+        }
+
+        private function onClickNew(event:MouseEvent):void
+        {
+            saveManager.loadNewGame();
+        }
+
+        private function onClickLoad(event:MouseEvent):void
+        {
+            PageManager.open(new LoadPage());
+        }
+
         private function onClickExit(event:MouseEvent):void
         {
             NativeApplication.nativeApplication.exit();
@@ -31,9 +65,12 @@
                           height="100%"
                           horizontalAlign="center"
                           verticalAlign="middle">
-                    <s:Label text="Start"/>
-                    <s:Button label="new"/>
-                    <s:Button label="load"/>
+                    <s:Label text="start"/>
+                    <s:Button label="new"
+                              click="onClickNew(event)"/>
+                    <s:Button id="buttonLoad"
+                              label="load"
+                              click="onClickLoad(event)"/>
                     <s:Button label="exit"
                               click="onClickExit(event)"/>
                 </s:VGroup>

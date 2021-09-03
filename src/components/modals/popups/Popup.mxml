@@ -23,10 +23,9 @@
         {
             if (lockForAnimation)
                 return;
+            lockForAnimation = true;
 
             trace("popup.show: " + getQualifiedClassName(this));
-
-            lockForAnimation = true;
 
             animationMode = true;
             visible = true;
@@ -48,18 +47,17 @@
 
         private function onShowTweenComplete():void
         {
-            animationMode = false;
             lockForAnimation = false;
+            animationMode = false;
         }
 
         override public function hide():void
         {
             if (lockForAnimation)
                 return;
+            lockForAnimation = true;
 
             trace("popup.hide: " + getQualifiedClassName(this));
-
-            lockForAnimation = true;
 
             animationMode = true;
             visible = true;
@@ -80,6 +78,7 @@
             animationMode = false;
 
             // Dispose when done
+            lockForAnimation = false;
             dispose();
             Signal.instance.dispatch(new PopupEvent(PopupEvent.CLOSED));
         }
