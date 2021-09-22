@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<popups:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+              xmlns:s="library://ns.adobe.com/flex/spark"
+              xmlns:popups="components.modals.popups.*">
+
+    <fx:Script>
+        <![CDATA[
+        import logic.GameState;
+        import logic.SortUtil;
+        import logic.managers.SaveManager;
+
+        import mx.collections.ArrayCollection;
+
+        private var saveManager:SaveManager;
+        private var gameState:GameState;
+
+        override public function show():void
+        {
+            super.show();
+
+            saveManager = SaveManager.instance;
+            gameState = GameState.instance;
+
+            validateSaves();
+        }
+
+        private function validateSaves():void
+        {
+            saveManager.getSaves(gameState.characterName, onGetSaves);
+        }
+
+        private function onGetSaves(saves:Array):void
+        {
+            var arr:ArrayCollection = new ArrayCollection(saves);
+            arr.sort = SortUtil.byTime;
+            arr.refresh();
+            listSaves.dataProvider = arr;
+        }
+
+        private function onClickClose(event:MouseEvent):void
+        {
+            close();
+        }
+
+        private function onClickSave(event:MouseEvent):void
+        {
+            SaveManager.instance.saveGame(inputSave.text);
+            validateSaves();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Group width="400">
+
+        <s:BitmapImage id="bitmapImage"
+                       smooth="true"
+                       smoothingQuality="high"/>
+
+        <s:VGroup id="content"
+                  width="100%"
+                  gap="0">
+
+            <s:Panel width="100%">
+                <s:VGroup width="100%"
+                          padding="15">
+                    <s:Label text="save"
+                             fontSize="20"
+                             fontWeight="bold"
+                             width="100%"/>
+
+                    <s:List id="listSaves"
+                            width="100%"
+                            height="200"
+                            requireSelection="true"
+                            labelField="name"/>
+
+                    <s:TextInput id="inputSave"
+                                 width="100%"
+                                 text="some-name"/>
+
+                    <s:Button label="save"
+                              click="onClickSave(event)"/>
+
+                    <s:Button label="back"
+                              click="onClickClose(event)"/>
+                </s:VGroup>
+                <s:HGroup width="100%"
+                          height="100%"
+                          padding="10">
+
+                </s:HGroup>
+            </s:Panel>
+
+        </s:VGroup>
+    </s:Group>
+
+</popups:Popup>

@@ -9,6 +9,7 @@
 
         import logic.GameState;
         import logic.managers.PageManager;
+        import logic.managers.PopupManager;
 
         private function onClickClose(event:MouseEvent):void
         {
@@ -17,12 +18,13 @@
 
         private function onClickSave(event:MouseEvent):void
         {
-            //todo save
+            PopupManager.open(new SavePopup());
         }
 
         private function onClickLoad(event:MouseEvent):void
         {
             //todo load
+            //PopupManager.open(new LoadPopup());
         }
 
         private function onClickQuit(event:MouseEvent):void

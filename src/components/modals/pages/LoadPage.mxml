@@ -5,12 +5,9 @@
 
     <fx:Script>
         <![CDATA[
-        import logic.GameState;
-        import logic.GameState;
         import logic.Save;
         import logic.SortUtil;
         import logic.managers.PageManager;
-        import logic.managers.SaveManager;
         import logic.managers.SaveManager;
 
         import mx.collections.ArrayCollection;
