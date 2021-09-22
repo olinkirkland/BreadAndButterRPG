@@ -5,9 +5,22 @@
 
     <fx:Script>
         <![CDATA[
+        import components.modals.popups.MenuPopup;
+
+        import logic.managers.PopupManager;
+
+        import mx.collections.ArrayCollection;
+
         override public function show():void
         {
             super.show();
+
+            barGameNavigation.dataProvider = new ArrayCollection(["place", "world map", "items", "party"]);
+        }
+
+        private function onClickMenu(event:MouseEvent):void
+        {
+            PopupManager.open(new MenuPopup());
         }
         ]]>
     </fx:Script>
@@ -32,6 +45,10 @@
                           verticalAlign="middle">
                     <s:Label text="game"/>
                 </s:VGroup>
+                <s:HGroup width="100%" height="100%" horizontalAlign="center" verticalAlign="bottom">
+                    <s:ButtonBar id="barGameNavigation" requireSelection="true"/>
+                    <s:Button label="menu" click="onClickMenu(event)"/>
+                </s:HGroup>
             </s:Panel>
 
         </s:VGroup>

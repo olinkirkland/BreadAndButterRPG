@@ -26,7 +26,6 @@
         private function onGameLoaded(event:Event):void
         {
             var gameState:GameState = GameState.instance;
-            trace("onGameLoaded: \"" + GameState.instance.characterName + "\"");
 
             PageManager.open(gameState.characterName ? new GamePage() : new CharacterCreatePage());
         }

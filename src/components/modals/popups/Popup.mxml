@@ -9,10 +9,8 @@
 
         import logic.Signal;
         import logic.events.PopupEvent;
-        import logic.managers.PopupManager;
 
         import spark.components.Group;
-
         import spark.primitives.BitmapImage;
 
         private var lockForAnimation:Boolean = false;
@@ -32,8 +30,8 @@
 
             // Animate in
             var tweenFrom:Object = {
-                scaleX: .95,
-                scaleY: .95
+                scaleX: .98,
+                scaleY: .98
             };
 
             var tweenTo:Object = {

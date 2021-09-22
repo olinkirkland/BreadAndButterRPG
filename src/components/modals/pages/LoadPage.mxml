@@ -6,8 +6,11 @@
     <fx:Script>
         <![CDATA[
         import logic.GameState;
+        import logic.GameState;
+        import logic.Save;
         import logic.SortUtil;
         import logic.managers.PageManager;
+        import logic.managers.SaveManager;
         import logic.managers.SaveManager;
 
         import mx.collections.ArrayCollection;
@@ -77,15 +80,14 @@
 
         private function onGameLoaded(event:Event):void
         {
-            var gameState:GameState = GameState.instance;
-            trace("onGameLoaded: \"" + GameState.instance.characterName + "\"");
-
-            PageManager.open(gameState.characterName ? new GamePage() : new CharacterCreatePage());
+            PageManager.open(new GamePage());
         }
 
         private function onClickLoad(event:MouseEvent):void
         {
             // Load the selected save
+            var save:Save = listSaves.selectedItem;
+            SaveManager.instance.loadGame(save.data);
         }
 
         private function onClickDelete(event:MouseEvent):void

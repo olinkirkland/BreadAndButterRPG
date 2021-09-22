@@ -5,6 +5,7 @@ package logic
         private static var _instance:GameState;
 
         public var characterName:String;
+        public var place:String;
 
         public function GameState()
         {

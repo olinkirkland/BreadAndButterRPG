@@ -23,7 +23,7 @@
                 return;
             lockForAnimation = true;
 
-            trace("page.show: " + getQualifiedClassName(this) + ";" + this.name);
+            trace("page.show: " + getQualifiedClassName(this));
 
             visible = true;
             alpha = .5;
@@ -44,7 +44,7 @@
                 return;
             lockForAnimation = true;
 
-            trace("page.hide: " + getQualifiedClassName(this) + ";" + this.name);
+            trace("page.hide: " + getQualifiedClassName(this));
 
             alpha = .5;
             setTimeout(onHideComplete, 200);
@@ -60,7 +60,7 @@
 
         override public function dispose():void
         {
-            trace("page.dispose: " + getQualifiedClassName(this) + ";" + this.name);
+            trace("page.dispose: " + getQualifiedClassName(this));
             (owner as Group).removeElement(this);
         }
         ]]>

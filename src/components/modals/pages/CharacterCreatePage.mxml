@@ -23,7 +23,7 @@
         {
             GameState.instance.characterName = inputCharacterName.text;
             SaveManager.instance.saveGame();
-            PageManager.open(new StartPage());
+            PageManager.open(new GamePage());
         }
         ]]>
     </fx:Script>

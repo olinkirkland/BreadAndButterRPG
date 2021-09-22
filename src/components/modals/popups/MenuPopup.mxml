@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<popups:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+              xmlns:s="library://ns.adobe.com/flex/spark"
+              xmlns:popups="components.modals.popups.*">
+
+    <fx:Script>
+        <![CDATA[
+        import components.modals.pages.StartPage;
+
+        import logic.GameState;
+        import logic.managers.PageManager;
+
+        private function onClickClose(event:MouseEvent):void
+        {
+            close();
+        }
+
+        private function onClickSave(event:MouseEvent):void
+        {
+            //todo save
+        }
+
+        private function onClickLoad(event:MouseEvent):void
+        {
+            //todo load
+        }
+
+        private function onClickQuit(event:MouseEvent):void
+        {
+            PageManager.open(new StartPage());
+            close();
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Group width="400">
+
+        <s:BitmapImage id="bitmapImage"
+                       smooth="true"
+                       smoothingQuality="high"/>
+
+        <s:VGroup id="content"
+                  width="100%"
+                  gap="0">
+
+            <s:Panel width="100%">
+                <s:VGroup width="100%"
+                          padding="15">
+                    <s:Label text="menu"
+                             fontSize="20"
+                             fontWeight="bold"
+                             width="100%"/>
+                    <s:Button label="resume game"
+                              click="onClickClose(event)"/>
+                    <s:Button label="save"
+                              click="onClickSave(event)"/>
+                    <s:Button label="load"
+                              click="onClickLoad(event)"/>
+                    <s:Button label="quit game"
+                              click="onClickQuit(event)"/>
+                </s:VGroup>
+                <s:HGroup width="100%"
+                          height="100%"
+                          padding="10">
+
+                </s:HGroup>
+            </s:Panel>
+
+        </s:VGroup>
+    </s:Group>
+
+</popups:Popup>
