@@ -42,7 +42,7 @@
             close();
         }
 
-        private function onClickSave(event:MouseEvent):void
+        private function onClickSave(event:MouseEvent):void 
         {
             SaveManager.instance.saveGame(inputSave.text);
             validateSaves();
@@ -64,7 +64,6 @@
                 <s:VGroup width="100%"
                           padding="15">
                     <s:Label text="save"
-                             fontSize="20"
                              fontWeight="bold"
                              width="100%"/>
 

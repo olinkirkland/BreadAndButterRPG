@@ -5,6 +5,8 @@
 
     <fx:Script>
         <![CDATA[
+        import global.Utils;
+
         import logic.GameState;
         import logic.GameState;
         import logic.managers.PageManager;
@@ -21,6 +23,9 @@
 
             var f:File = File.applicationStorageDirectory.resolvePath("saves");
             buttonLoad.enabled = f.exists && f.getDirectoryListing().length > 0;
+
+            // Do some start stuff
+            Utils.initSharedObject();
         }
 
         private function onGameLoaded(event:Event):void

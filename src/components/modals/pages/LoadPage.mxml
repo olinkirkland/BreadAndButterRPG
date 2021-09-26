@@ -5,9 +5,16 @@
 
     <fx:Script>
         <![CDATA[
+        import components.modals.popups.ConfirmPopup;
+
+        import global.SharedProperty;
+
+        import global.Utils;
+
         import logic.Save;
         import logic.SortUtil;
         import logic.managers.PageManager;
+        import logic.managers.PopupManager;
         import logic.managers.SaveManager;
 
         import mx.collections.ArrayCollection;
@@ -24,6 +31,11 @@
             saveManager.addEventListener(SaveManager.GAME_LOADED, onGameLoaded);
 
             validateCharacters();
+
+            // Select initial last played character
+            var lastPlayedCharacterName:String = String(Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER));
+            if (lastPlayedCharacterName)
+                dropDownListCharacterNames.selectedItem = lastPlayedCharacterName;
         }
 
         private function validateCharacters():void
@@ -87,12 +99,34 @@
             SaveManager.instance.loadGame(save.data);
         }
 
-        private function onClickDelete(event:MouseEvent):void
+        private function onClickDeleteCharacter(event:MouseEvent):void
+        {
+            // Delete the selected character
+            var popup:ConfirmPopup = new ConfirmPopup();
+            popup.onConfirm = onConfirmDelete;
+            PopupManager.open(popup);
+
+            function onConfirmDelete():void
+            {
+                var f:File = File.applicationStorageDirectory.resolvePath("saves/" + dropDownListCharacterNames.selectedItem);
+                f.deleteDirectory(true);
+                validateCharacters();
+            }
+        }
+
+        private function onClickDeleteSave(event:MouseEvent):void
         {
             // Delete the selected save
-            var file:File = listSaves.selectedItem.file;
-            file.deleteFile();
-            validateSaves();
+            var popup:ConfirmPopup = new ConfirmPopup();
+            popup.onConfirm = onConfirmDelete;
+            PopupManager.open(popup);
+
+            function onConfirmDelete():void
+            {
+                var file:File = listSaves.selectedItem.file;
+                file.deleteFile();
+                validateSaves();
+            }
         }
 
         private function onClickCancel(event:MouseEvent):void
@@ -125,9 +159,15 @@
                               horizontalAlign="center"
                               verticalAlign="middle">
                         <s:Label text="load"/>
-                        <s:DropDownList id="dropDownListCharacterNames"
-                                        requireSelection="true"
-                                        width="100%"/>
+
+                        <s:HGroup width="100%">
+                            <s:DropDownList id="dropDownListCharacterNames"
+                                            requireSelection="true"
+                                            width="100%"/>
+                            <s:Button label="delete"
+                                      click="onClickDeleteCharacter(event)"/>
+                        </s:HGroup>
+
                         <s:List id="listSaves"
                                 width="100%"
                                 height="200"
@@ -137,7 +177,7 @@
                                   click="onClickLoad(event)"/>
                         <s:HGroup>
                             <s:Button label="delete save"
-                                      click="onClickDelete(event)"/>
+                                      click="onClickDeleteSave(event)"/>
                             <s:Button label="cancel"
                                       click="onClickCancel(event)"/>
                         </s:HGroup>

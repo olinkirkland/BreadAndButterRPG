@@ -5,6 +5,16 @@
 
     <fx:Script>
         <![CDATA[
+        public var onConfirm:Function;
+
+        private function onClickConfirm(event:MouseEvent):void
+        {
+            if (onConfirm)
+                onConfirm.apply();
+
+            close();
+        }
+
         private function onClickClose(event:MouseEvent):void
         {
             close();
@@ -25,13 +35,19 @@
             <s:Panel width="100%">
                 <s:VGroup width="100%"
                           padding="15">
-                    <s:Label text="Error!"
-                             fontSize="20"
+                    <s:Label text="Are you sure?"
+                             textAlign="center"
                              fontWeight="bold"
                              width="100%"/>
-                    <s:Label text="Hello world"/>
-                    <s:Button label="Close"
-                              click="onClickClose(event)"/>
+
+                    <s:HGroup width="100%"
+                              horizontalAlign="center">
+                        <s:Button label="Yes"
+                                  click="onClickConfirm(event)"/>
+                        <s:Button label="Cancel"
+                                  click="onClickClose(event)"/>
+                    </s:HGroup>
+
                 </s:VGroup>
                 <s:HGroup width="100%"
                           height="100%"

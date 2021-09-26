@@ -1,5 +1,8 @@
 package logic.managers
 {
+import global.SharedProperty;
+import global.Utils;
+
 import logic.*;
 
 import flash.events.Event;
@@ -47,18 +50,21 @@ public class SaveManager extends EventDispatcher
         {
             var str:String = "saves/" + GameState.instance.characterName + "/" + name;
             if (i > 0)
-                str += " " + i;
+                str += " (" + i + ")";
 
             f = File.applicationStorageDirectory.resolvePath(str + ".json");
             i++;
         } while (f.exists);
 
-        data.name = f.name;
+        data.name = Utils.stringSegment(f.name, ".");
 
         var stream:FileStream = new FileStream();
         stream.open(f, FileMode.WRITE);
         stream.writeUTFBytes(JSON.stringify(data));
         stream.close();
+
+        // Store this as the most recent character
+        Utils.setProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER, GameState.instance.characterName);
 
         dispatchEvent(new Event(GAME_SAVED));
     }

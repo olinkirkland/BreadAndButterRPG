@@ -5,8 +5,11 @@
 
     <fx:Script>
         <![CDATA[
+        import components.modals.popups.InfoPopup;
+
         import logic.GameState;
         import logic.managers.PageManager;
+        import logic.managers.PopupManager;
         import logic.managers.SaveManager;
 
         override public function show():void
@@ -21,6 +24,20 @@
 
         private function onClickContinue(event:MouseEvent):void
         {
+            // Does this character already exist?
+            var characters:Array = [];
+            var characterFolders:Array = File.applicationStorageDirectory.resolvePath("saves").getDirectoryListing();
+            for each (var f:File in characterFolders)
+                characters.push(f.name);
+            if (characters.indexOf(inputCharacterName.text) >= 0)
+            {
+                var popup:InfoPopup = new InfoPopup();
+                popup.title = "Error";
+                popup.body = "a character with that name already exists, please choose another name";
+                PopupManager.open(popup);
+                return;
+            }
+
             GameState.instance.characterName = inputCharacterName.text;
             SaveManager.instance.saveGame();
             PageManager.open(new GamePage());
