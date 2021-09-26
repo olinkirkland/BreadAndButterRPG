@@ -5,14 +5,16 @@
 
     <fx:Script>
         <![CDATA[
+        import global.SharedProperty;
         import global.Utils;
 
         import logic.GameState;
-        import logic.GameState;
+        import logic.Save;
         import logic.managers.PageManager;
         import logic.managers.SaveManager;
 
         private var saveManager:SaveManager;
+        private var mostRecentSave:Save;
 
         override public function show():void
         {
@@ -26,6 +28,29 @@
 
             // Do some start stuff
             Utils.initSharedObject();
+
+            // Get the most recent character/save
+            var lastPlayedCharacterName:String = String(Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER));
+            if (lastPlayedCharacterName)
+            {
+                SaveManager.instance.getSaves(lastPlayedCharacterName, onGetSaves);
+            } else
+            {
+                panelContinue.visible = panelContinue.includeInLayout = false;
+            }
+        }
+
+        private function onGetSaves(saves:Array):void
+        {
+            if (saves.length == 0)
+            {
+                mostRecentSave = null;
+                panelContinue.visible = panelContinue.includeInLayout = false;
+                return;
+            }
+
+            mostRecentSave = saves[0];
+            labelRecentSave.text = mostRecentSave.name;
         }
 
         private function onGameLoaded(event:Event):void
@@ -49,6 +74,16 @@
         {
             NativeApplication.nativeApplication.exit();
         }
+
+        private function onClickContinue(event:MouseEvent):void
+        {
+            var lastPlayedCharacterName:String = String(Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER));
+            if (!lastPlayedCharacterName)
+                return;
+
+            // Load most recent save
+            SaveManager.instance.loadGame(mostRecentSave.data);
+        }
         ]]>
     </fx:Script>
 
@@ -71,8 +106,20 @@
                           horizontalAlign="center"
                           verticalAlign="middle">
                     <s:Label text="start"/>
+
+                    <s:Panel id="panelContinue">
+                        <s:VGroup horizontalAlign="center">
+                            <s:Button id="buttonContinue"
+                                      label="continue"
+                                      click="onClickContinue(event)"/>
+                            <s:Label id="labelRecentSave"
+                                     alpha=".6"/>
+                        </s:VGroup>
+                    </s:Panel>
+
                     <s:Button label="new"
                               click="onClickNew(event)"/>
+
                     <s:Button id="buttonLoad"
                               label="load"
                               click="onClickLoad(event)"/>
