@@ -45,7 +45,7 @@
             }
 
             labelRecentSave.text = lastPlayedCharacterName;
-            panelContinue.visible = panelContinue.includeInLayout = lastPlayedCharacterName;
+            panelContinue.visible = panelContinue.includeInLayout = hasLastPlayedCharacterName;
         }
 
         private function onGetSaves(saves:Array):void
