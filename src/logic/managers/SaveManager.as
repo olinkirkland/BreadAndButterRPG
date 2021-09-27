@@ -1,5 +1,7 @@
 package logic.managers
 {
+import components.modals.popups.InfoPopup;
+
 import global.SharedProperty;
 import global.Utils;
 
@@ -38,7 +40,7 @@ public class SaveManager extends EventDispatcher
         return _instance;
     }
 
-    public function saveGame(name:String = "Auto-save"):void
+    public function saveGame(name:String = "Auto-save", overwrite:Boolean = false):void
     {
         // Save by name
         var data:Object = GameState.instance.toObject();
@@ -54,7 +56,7 @@ public class SaveManager extends EventDispatcher
 
             f = File.applicationStorageDirectory.resolvePath(str + ".json");
             i++;
-        } while (f.exists);
+        } while (f.exists && !overwrite);
 
         data.name = Utils.stringSegment(f.name, ".");
 
@@ -74,6 +76,11 @@ public class SaveManager extends EventDispatcher
         // Load by name
         GameState.instance.fromObject(data);
         dispatchEvent(new Event(GAME_LOADED));
+
+        var popup:InfoPopup = new InfoPopup();
+        popup.title = "Game loaded";
+        popup.body = data.characterName + "\n" + data.name;
+        PopupManager.open(popup);
     }
 
     public function loadNewGame():void

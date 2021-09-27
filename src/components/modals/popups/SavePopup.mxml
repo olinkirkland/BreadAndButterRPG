@@ -11,6 +11,8 @@
 
         import mx.collections.ArrayCollection;
 
+        import spark.events.IndexChangeEvent;
+
         private var saveManager:SaveManager;
         private var gameState:GameState;
 
@@ -21,7 +23,15 @@
             saveManager = SaveManager.instance;
             gameState = GameState.instance;
 
+            listSaves.addEventListener(IndexChangeEvent.CHANGE, onListSaveSelectionChange);
+
             validateSaves();
+        }
+
+        private function onListSaveSelectionChange(event:IndexChangeEvent):void
+        {
+            if (listSaves.selectedItem)
+                inputSave.text = listSaves.selectedItem.name;
         }
 
         private function validateSaves():void
@@ -35,6 +45,9 @@
             arr.sort = SortUtil.byTime;
             arr.refresh();
             listSaves.dataProvider = arr;
+
+            // Select the save at the top of the list
+            listSaves.selectedIndex = 0;
         }
 
         private function onClickClose(event:MouseEvent):void
@@ -42,7 +55,7 @@
             close();
         }
 
-        private function onClickSave(event:MouseEvent):void 
+        private function onClickSave(event:MouseEvent):void
         {
             SaveManager.instance.saveGame(inputSave.text);
             validateSaves();

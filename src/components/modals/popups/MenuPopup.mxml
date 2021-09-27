@@ -10,6 +10,7 @@
         import logic.GameState;
         import logic.managers.PageManager;
         import logic.managers.PopupManager;
+        import logic.managers.SaveManager;
 
         private function onClickClose(event:MouseEvent):void
         {
@@ -21,10 +22,24 @@
             PopupManager.open(new SavePopup());
         }
 
+        private function onClickQuickSave(event:MouseEvent):void
+        {
+            SaveManager.instance.saveGame("quick-save", true);
+
+            var popup:InfoPopup = new InfoPopup();
+            popup.title = "game saved";
+            popup.body = "quick save complete";
+            PopupManager.open(popup);
+        }
+
+        private function onClickQuickLoad(event:MouseEvent):void
+        {
+            //SaveManager.instance.loadGame()
+        }
+
         private function onClickLoad(event:MouseEvent):void
         {
-            //todo load
-            //PopupManager.open(new LoadPopup());
+            PopupManager.open(new LoadPopup());
         }
 
         private function onClickQuit(event:MouseEvent):void
@@ -46,24 +61,36 @@
                   gap="0">
 
             <s:Panel width="100%">
-                <s:VGroup width="100%"
-                          padding="15">
-                    <s:Label text="menu"
-                             fontWeight="bold"
-                             width="100%"/>
-                    <s:Button label="resume game"
-                              click="onClickClose(event)"/>
-                    <s:Button label="save"
-                              click="onClickSave(event)"/>
-                    <s:Button label="load"
-                              click="onClickLoad(event)"/>
-                    <s:Button label="quit game"
-                              click="onClickQuit(event)"/>
-                </s:VGroup>
-                <s:HGroup width="100%"
-                          height="100%"
-                          padding="10">
+                <s:HGroup width="100%">
+                    <s:VGroup width="100%"
+                              padding="15">
+                        <s:Label text="menu"
+                                 fontWeight="bold"
+                                 width="100%"/>
 
+                        <s:HGroup width="100%">
+
+                            <s:VGroup width="100%">
+                                <s:Button label="resume game"
+                                          click="onClickClose(event)"/>
+                                <s:Button label="save"
+                                          click="onClickSave(event)"/>
+                                <s:Button label="load"
+                                          click="onClickLoad(event)"/>
+                                <s:Button label="quit game"
+                                          click="onClickQuit(event)"/>
+                            </s:VGroup>
+
+                            <s:VGroup width="100%">
+                                <s:Button label="quick save"
+                                          click="onClickQuickSave(event)"/>
+                                <s:Button label="quick load"
+                                          click="onClickQuickLoad(event)"/>
+                            </s:VGroup>
+
+                        </s:HGroup>
+
+                    </s:VGroup>
                 </s:HGroup>
             </s:Panel>
 

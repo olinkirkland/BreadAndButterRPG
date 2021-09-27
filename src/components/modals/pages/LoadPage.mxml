@@ -33,8 +33,9 @@
             validateCharacters();
 
             // Select initial last played character
+            var hasLastPlayedCharacterName:Boolean = Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER);
             var lastPlayedCharacterName:String = String(Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER));
-            if (lastPlayedCharacterName)
+            if (hasLastPlayedCharacterName)
                 dropDownListCharacterNames.selectedItem = lastPlayedCharacterName;
         }
 
@@ -133,6 +134,11 @@
         {
             PageManager.open(new StartPage());
         }
+
+        private function makeSaveLabel(save:Save):String
+        {
+            return save.name + " ... " + Utils.toRelativeDate(save.time);
+        }
         ]]>
     </fx:Script>
 
@@ -172,7 +178,7 @@
                                 width="100%"
                                 height="200"
                                 requireSelection="true"
-                                labelField="name"/>
+                                labelFunction="makeSaveLabel"/>
                         <s:Button label="load game"
                                   click="onClickLoad(event)"/>
                         <s:HGroup>

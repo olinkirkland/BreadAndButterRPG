@@ -65,7 +65,7 @@
                           verticalAlign="middle">
                     <s:Label text="create character"/>
                     <s:TextInput id="inputCharacterName"
-                                 text="foo"
+                                 text="miffy wuz heer"
                                  textAlign="center"/>
                     <s:Button label="continue"
                               click="onClickContinue(event)"/>

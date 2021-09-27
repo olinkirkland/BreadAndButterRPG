@@ -84,8 +84,16 @@
                 return;
             }
 
+            TweenLite.killTweensOf(popupShade);
             TweenLite.to(popupShade, .2, {alpha: 1});
             popupShade.mouseEnabled = true;
+
+            if (!popup)
+            {
+                popupClosed(null);
+                return;
+            }
+
             popupGroup.addElement(popup);
             currentPopup = popup;
         }
@@ -93,7 +101,8 @@
         private function popupClosed(event:PopupEvent):void
         {
             // A popup was closed
-            TweenLite.to(popupShade, .2, {alpha: 0});
+            TweenLite.killTweensOf(popupShade);
+            TweenLite.to(popupShade, .2, {delay: .4, alpha: 0});
             popupShade.mouseEnabled = false;
             currentPopup = null;
 

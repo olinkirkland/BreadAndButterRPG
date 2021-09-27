@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<popups:Popup xmlns:fx="http://ns.adobe.com/mxml/2009"
+              xmlns:s="library://ns.adobe.com/flex/spark"
+              xmlns:popups="components.modals.popups.*">
+
+    <fx:Script>
+        <![CDATA[
+        import components.modals.pages.GamePage;
+        import components.modals.pages.StartPage;
+
+        import global.Utils;
+
+        import logic.GameState;
+        import logic.Save;
+        import logic.SortUtil;
+        import logic.managers.PageManager;
+        import logic.managers.PopupManager;
+        import logic.managers.SaveManager;
+
+        import mx.collections.ArrayCollection;
+
+        private var saveManager:SaveManager;
+
+        override public function show():void
+        {
+            super.show();
+
+            saveManager = SaveManager.instance;
+            saveManager.addEventListener(SaveManager.GAME_LOADED, onGameLoaded);
+            validateSaves();
+        }
+
+        private function validateSaves():void
+        {
+            saveManager.getSaves(GameState.instance.characterName, onGetSaves);
+        }
+
+        private function onGetSaves(saves:Array):void
+        {
+            var arr:ArrayCollection = new ArrayCollection(saves);
+            arr.sort = SortUtil.byTime;
+            arr.refresh();
+            listSaves.dataProvider = arr;
+        }
+
+        private function onGameLoaded(event:Event):void
+        {
+            PopupManager.open(null);
+            PageManager.open(new GamePage());
+        }
+
+        private function onClickLoad(event:MouseEvent):void
+        {
+            // Load the selected save
+            var save:Save = listSaves.selectedItem;
+            SaveManager.instance.loadGame(save.data);
+        }
+
+        private function onClickCancel(event:MouseEvent):void
+        {
+            PopupManager.open(new MenuPopup());
+        }
+
+        private function makeSaveLabel(save:Save):String
+        {
+            return save.name + " ... " + Utils.toRelativeDate(save.time);
+        }
+        ]]>
+    </fx:Script>
+
+    <s:Group width="400">
+
+        <s:BitmapImage id="bitmapImage"
+                       smooth="true"
+                       smoothingQuality="high"/>
+
+        <s:VGroup id="content"
+                  width="100%"
+                  gap="0">
+
+            <s:Panel width="100%"
+                     height="100%">
+                <s:VGroup width="100%"
+                          height="100%"
+                          verticalAlign="middle">
+                    <s:VGroup width="300"
+                              height="100%"
+                              verticalAlign="middle">
+                        <s:Label text="load"/>
+
+                        <s:List id="listSaves"
+                                width="100%"
+                                height="200"
+                                requireSelection="true"
+                                labelFunction="makeSaveLabel"/>
+                        <s:Button label="load game"
+                                  click="onClickLoad(event)"/>
+                        <s:Button label="back"
+                                  click="onClickCancel(event)"/>
+                    </s:VGroup>
+                </s:VGroup>
+            </s:Panel>
+
+        </s:VGroup>
+    </s:Group>
+
+</popups:Popup>

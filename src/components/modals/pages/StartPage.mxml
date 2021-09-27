@@ -10,8 +10,11 @@
 
         import logic.GameState;
         import logic.Save;
+        import logic.SortUtil;
         import logic.managers.PageManager;
         import logic.managers.SaveManager;
+
+        import mx.collections.ArrayCollection;
 
         private var saveManager:SaveManager;
         private var mostRecentSave:Save;
@@ -30,14 +33,19 @@
             Utils.initSharedObject();
 
             // Get the most recent character/save
+            var hasLastPlayedCharacterName:Boolean = Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER);
             var lastPlayedCharacterName:String = String(Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER));
-            if (lastPlayedCharacterName)
+            if (hasLastPlayedCharacterName)
             {
-                SaveManager.instance.getSaves(lastPlayedCharacterName, onGetSaves);
-            } else
-            {
-                panelContinue.visible = panelContinue.includeInLayout = false;
+                var d:File = File.applicationStorageDirectory.resolvePath("saves/" + lastPlayedCharacterName);
+                if (d.exists)
+                    SaveManager.instance.getSaves(lastPlayedCharacterName, onGetSaves);
+                else
+                    lastPlayedCharacterName = Utils.setProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER, null);
             }
+
+            labelRecentSave.text = lastPlayedCharacterName;
+            panelContinue.visible = panelContinue.includeInLayout = lastPlayedCharacterName;
         }
 
         private function onGetSaves(saves:Array):void
@@ -49,8 +57,11 @@
                 return;
             }
 
-            mostRecentSave = saves[0];
-            labelRecentSave.text = mostRecentSave.name;
+            var arr:ArrayCollection = new ArrayCollection(saves);
+            arr.sort = SortUtil.byTime;
+            arr.refresh();
+            mostRecentSave = Save(arr.getItemAt(0));
+            labelRecentTime.text = mostRecentSave.name + " ... " + Utils.toRelativeDate(mostRecentSave.time);
         }
 
         private function onGameLoaded(event:Event):void
@@ -113,7 +124,12 @@
                                       label="continue"
                                       click="onClickContinue(event)"/>
                             <s:Label id="labelRecentSave"
+                                     text="..."
+                                     paddingTop="5"
                                      alpha=".6"/>
+                            <s:Label id="labelRecentTime"
+                                     alpha=".6"
+                                     fontStyle="italic"/>
                         </s:VGroup>
                     </s:Panel>
 
