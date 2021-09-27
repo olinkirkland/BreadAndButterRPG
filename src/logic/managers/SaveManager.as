@@ -2,6 +2,8 @@ package logic.managers
 {
 import components.modals.popups.InfoPopup;
 
+import flash.utils.ByteArray;
+
 import global.SharedProperty;
 import global.Utils;
 
@@ -96,9 +98,9 @@ public class SaveManager extends EventDispatcher
         var files:Array = d.getDirectoryListing();
 
         var arr:Array = [];
-        load(null);
+        onGetSavesComplete(null);
 
-        function load(event:Event):void
+        function onGetSavesComplete(event:Event):void
         {
             if (event)
             {
@@ -124,8 +126,32 @@ public class SaveManager extends EventDispatcher
             }
 
             f = files.shift();
-            f.addEventListener(Event.COMPLETE, load);
+            f.addEventListener(Event.COMPLETE, onGetSavesComplete);
             f.load();
+        }
+    }
+
+    public function quickSave():void
+    {
+        saveGame("quick-save", true);
+    }
+
+    public function quickLoad():void
+    {
+        var d:File = File.applicationStorageDirectory.resolvePath("saves/" + GameState.instance.characterName);
+        var f:File = d.resolvePath("quick-save.json");
+        if (f.exists)
+        {
+            f.addEventListener(Event.COMPLETE, onQuickLoadComplete);
+            f.load();
+        } else
+        {
+            trace("No quick-save file found");
+        }
+
+        function onQuickLoadComplete(event:Event):void
+        {
+            loadGame(JSON.parse(String(event.target.data)));
         }
     }
 }

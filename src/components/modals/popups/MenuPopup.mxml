@@ -8,6 +8,7 @@
         import components.modals.pages.StartPage;
 
         import logic.GameState;
+        import logic.Save;
         import logic.managers.PageManager;
         import logic.managers.PopupManager;
         import logic.managers.SaveManager;
@@ -24,7 +25,7 @@
 
         private function onClickQuickSave(event:MouseEvent):void
         {
-            SaveManager.instance.saveGame("quick-save", true);
+            SaveManager.instance.quickSave();
 
             var popup:InfoPopup = new InfoPopup();
             popup.title = "game saved";
@@ -34,7 +35,8 @@
 
         private function onClickQuickLoad(event:MouseEvent):void
         {
-            //SaveManager.instance.loadGame()
+            buttonQuickLoad.enabled = false;
+            SaveManager.instance.quickLoad();
         }
 
         private function onClickLoad(event:MouseEvent):void
@@ -84,7 +86,8 @@
                             <s:VGroup width="100%">
                                 <s:Button label="quick save"
                                           click="onClickQuickSave(event)"/>
-                                <s:Button label="quick load"
+                                <s:Button id="buttonQuickLoad"
+                                          label="quick load"
                                           click="onClickQuickLoad(event)"/>
                             </s:VGroup>
 

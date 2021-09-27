@@ -7,6 +7,7 @@
         <![CDATA[
         import logic.GameState;
         import logic.SortUtil;
+        import logic.managers.PopupManager;
         import logic.managers.SaveManager;
 
         import mx.collections.ArrayCollection;
@@ -52,7 +53,7 @@
 
         private function onClickClose(event:MouseEvent):void
         {
-            close();
+            PopupManager.open(new MenuPopup());
         }
 
         private function onClickSave(event:MouseEvent):void
