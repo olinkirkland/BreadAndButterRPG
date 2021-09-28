@@ -15,12 +15,12 @@ import flash.filesystem.File;
 import flash.filesystem.FileMode;
 import flash.filesystem.FileStream;
 
-import logic.GameState;
+import logic.Game;
 
 public class SaveManager extends EventDispatcher
 {
     [Embed(source="/assets/data/newGame.json", mimeType="application/octet-stream")]
-    private static const newGame:Class;
+    private static const newGameJson:Class;
 
     public static const GAME_SAVED:String = "GAME_SAVED";
     public static const GAME_LOADED:String = "GAME_LOADED";
@@ -45,14 +45,14 @@ public class SaveManager extends EventDispatcher
     public function saveGame(name:String = "Auto-save", overwrite:Boolean = false):void
     {
         // Save by name
-        var data:Object = GameState.instance.toObject();
+        var data:Object = Game.instance.toObject();
         data.time = new Date().time;
 
         var f:File;
         var i:int = 0;
         do
         {
-            var str:String = "saves/" + GameState.instance.characterName + "/" + name;
+            var str:String = "saves/" + Game.instance.characterName + "/" + name;
             if (i > 0)
                 str += " (" + i + ")";
 
@@ -68,7 +68,7 @@ public class SaveManager extends EventDispatcher
         stream.close();
 
         // Store this as the most recent character
-        Utils.setProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER, GameState.instance.characterName);
+        Utils.setProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER, Game.instance.characterName);
 
         dispatchEvent(new Event(GAME_SAVED));
     }
@@ -76,18 +76,16 @@ public class SaveManager extends EventDispatcher
     public function loadGame(data:Object):void
     {
         // Load by name
-        GameState.instance.fromObject(data);
+        Game.instance.fromObject(data);
+        Game.instance.initialize();
         dispatchEvent(new Event(GAME_LOADED));
 
-        var popup:InfoPopup = new InfoPopup();
-        popup.title = "Game loaded";
-        popup.body = data.characterName + "\n" + data.name;
-        PopupManager.open(popup);
+        trace("loaded: " + data.characterName + ", " + data.name);
     }
 
     public function loadNewGame():void
     {
-        loadGame(JSON.parse(new newGame()));
+        loadGame(JSON.parse(new newGameJson()));
     }
 
     public function getSaves(characterName:String, callback:Function):void
@@ -138,7 +136,7 @@ public class SaveManager extends EventDispatcher
 
     public function quickLoad():void
     {
-        var d:File = File.applicationStorageDirectory.resolvePath("saves/" + GameState.instance.characterName);
+        var d:File = File.applicationStorageDirectory.resolvePath("saves/" + Game.instance.characterName);
         var f:File = d.resolvePath("quick-save.json");
         if (f.exists)
         {

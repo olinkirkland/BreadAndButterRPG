@@ -60,7 +60,7 @@ public class Utils
             {
                 if (minutes < 60)
                 {
-                    if (minutes < 5)
+                    if (minutes < 3)
                     {
                         // Just now
                         return "just now";

@@ -9,6 +9,7 @@ package logic.managers
     {
         public static function open(page:Page):void
         {
+            page.setFocus();
             Signal.instance.dispatch(new PageEvent(PageEvent.OPEN, page));
         }
     }

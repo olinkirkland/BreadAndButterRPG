@@ -10,7 +10,7 @@
 
         import global.Utils;
 
-        import logic.GameState;
+        import logic.Game;
         import logic.Save;
         import logic.SortUtil;
         import logic.managers.PageManager;
@@ -32,7 +32,7 @@
 
         private function validateSaves():void
         {
-            saveManager.getSaves(GameState.instance.characterName, onGetSaves);
+            saveManager.getSaves(Game.instance.characterName, onGetSaves);
         }
 
         private function onGetSaves(saves:Array):void
@@ -45,7 +45,6 @@
 
         private function onGameLoaded(event:Event):void
         {
-            PopupManager.open(null);
             PageManager.open(new GamePage());
         }
 

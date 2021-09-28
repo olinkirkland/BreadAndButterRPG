@@ -23,7 +23,7 @@
                 return;
             lockForAnimation = true;
 
-            trace("popup.show: " + getQualifiedClassName(this));
+            //trace("popup.show: " + getQualifiedClassName(this));
 
             animationMode = true;
             visible = true;
@@ -55,7 +55,7 @@
                 return;
             lockForAnimation = true;
 
-            trace("popup.hide: " + getQualifiedClassName(this));
+            //trace("popup.hide: " + getQualifiedClassName(this));
 
             animationMode = true;
             visible = true;

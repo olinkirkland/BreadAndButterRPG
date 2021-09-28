@@ -7,7 +7,7 @@
         <![CDATA[
         import components.modals.popups.InfoPopup;
 
-        import logic.GameState;
+        import logic.Game;
         import logic.managers.PageManager;
         import logic.managers.PopupManager;
         import logic.managers.SaveManager;
@@ -38,7 +38,7 @@
                 return;
             }
 
-            GameState.instance.characterName = inputCharacterName.text;
+            Game.instance.characterName = inputCharacterName.text;
             SaveManager.instance.saveGame();
             PageManager.open(new GamePage());
         }

@@ -8,7 +8,7 @@
         import global.SharedProperty;
         import global.Utils;
 
-        import logic.GameState;
+        import logic.Game;
         import logic.Save;
         import logic.SortUtil;
         import logic.managers.PageManager;
@@ -44,6 +44,8 @@
                     lastPlayedCharacterName = Utils.setProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER, null);
             }
 
+            hasLastPlayedCharacterName = Utils.getProperty(SharedProperty.LAST_PLAYED_AS_CHARACTER);
+
             labelRecentSave.text = lastPlayedCharacterName;
             panelContinue.visible = panelContinue.includeInLayout = hasLastPlayedCharacterName;
         }
@@ -66,7 +68,7 @@
 
         private function onGameLoaded(event:Event):void
         {
-            var gameState:GameState = GameState.instance;
+            var gameState:Game = Game.instance;
 
             PageManager.open(gameState.characterName ? new GamePage() : new CharacterCreatePage());
         }

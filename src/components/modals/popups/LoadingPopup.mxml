@@ -3,19 +3,7 @@
               xmlns:s="library://ns.adobe.com/flex/spark"
               xmlns:popups="components.modals.popups.*">
 
-    <fx:Script>
-        <![CDATA[
-        public var title:String;
-        public var body:String;
-
-        private function onClickClose(event:MouseEvent):void
-        {
-            close();
-        }
-        ]]>
-    </fx:Script>
-
-    <s:Group width="400">
+    <s:Group>
 
         <s:BitmapImage id="bitmapImage"
                        smooth="true"
@@ -30,18 +18,8 @@
                           padding="15">
                     <s:Label width="100%"
                              fontWeight="bold"
-                             text="{title}"/>
-                    <s:Label width="100%"
-                             text="{body}"/>
-
-                    <s:HGroup width="100%"
-                              horizontalAlign="center">
-                        <s:Button label="ok"
-                                  click="onClickClose(event)"/>
-                    </s:HGroup>
-
+                             text="loading"/>
                 </s:VGroup>
-
             </s:Panel>
 
         </s:VGroup>

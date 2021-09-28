@@ -1,3 +1,5 @@
 {
-  "place": "a"
+  "currentPlace": null,
+  "knownPlaces": {
+  }
 }

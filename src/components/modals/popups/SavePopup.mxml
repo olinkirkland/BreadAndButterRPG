@@ -5,7 +5,10 @@
 
     <fx:Script>
         <![CDATA[
-        import logic.GameState;
+        import global.Utils;
+
+        import logic.Game;
+        import logic.Save;
         import logic.SortUtil;
         import logic.managers.PopupManager;
         import logic.managers.SaveManager;
@@ -15,14 +18,14 @@
         import spark.events.IndexChangeEvent;
 
         private var saveManager:SaveManager;
-        private var gameState:GameState;
+        private var gameState:Game;
 
         override public function show():void
         {
             super.show();
 
             saveManager = SaveManager.instance;
-            gameState = GameState.instance;
+            gameState = Game.instance;
 
             listSaves.addEventListener(IndexChangeEvent.CHANGE, onListSaveSelectionChange);
 
@@ -61,6 +64,11 @@
             SaveManager.instance.saveGame(inputSave.text);
             validateSaves();
         }
+
+        private function makeSaveLabel(save:Save):String
+        {
+            return save.name + " ... " + Utils.toRelativeDate(save.time);
+        }
         ]]>
     </fx:Script>
 
@@ -85,7 +93,7 @@
                             width="100%"
                             height="200"
                             requireSelection="true"
-                            labelField="name"/>
+                            labelFunction="makeSaveLabel"/>
 
                     <s:TextInput id="inputSave"
                                  width="100%"
